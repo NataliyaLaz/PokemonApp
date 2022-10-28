@@ -16,6 +16,7 @@ struct Pokemon: Codable {
     let id: Int
 }
 
+
 struct Types: Codable {
     let type: Type
 }
@@ -26,7 +27,7 @@ struct Type: Codable {
 
 struct Sprites: Codable {
     let front_shiny: String?
-
+    
     public static let decoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -39,4 +40,7 @@ struct Sprites: Codable {
         } else { return "" }
     }
 }
+
+
+
 
