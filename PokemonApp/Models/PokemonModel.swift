@@ -8,26 +8,26 @@
 import Foundation
 
 struct Pokemon: Codable {
-    var name: String
-    var sprites: Sprites
-    var height: Int
-    var weight: Int
-    var types: [Types]
-    var id: Int
+    let name: String
+    let sprites: Sprites
+    let height: Int
+    let weight: Int
+    let types: [Types]
+    let id: Int
 }
 
 struct Types: Codable {
-    var type: Type
+    let type: Type
 }
 
 struct Type: Codable {
-    var name: String
+    let name: String
 }
 
 struct Sprites: Codable {
-    var front_shiny: String?
+    let front_shiny: String?
 
-    public static var decoder: JSONDecoder = {
+    public static let decoder: JSONDecoder = {
         let decoder = JSONDecoder()
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         return decoder

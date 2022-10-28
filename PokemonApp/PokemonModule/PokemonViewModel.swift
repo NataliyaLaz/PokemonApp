@@ -6,16 +6,18 @@
 //
 
 import UIKit
+import RealmSwift
 
 protocol PokemonViewModelProtocol {
-    var model: Pokemon { get }
+    var model: Pokemon? { get }
     func getPictureFrom(urlString: String, completion: @escaping (UIImage?) -> ())
 }
 
 final class PokemonViewModel: PokemonViewModelProtocol {
     
-    private(set) var model: Pokemon
+    private(set) var model: Pokemon?
     private let networkManager: NetworkManagerProtocol
+    
     
     init(model: Pokemon, networkManager: NetworkManagerProtocol) {
         self.model = model

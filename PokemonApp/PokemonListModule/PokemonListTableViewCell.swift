@@ -26,8 +26,6 @@ final class PokemonListTableViewCell: UITableViewCell {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-    
-    var id = 0
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -39,9 +37,8 @@ final class PokemonListTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func cellConfigure(with pokemon: PokemonListItem?) {
-        id = pokemon?.id ?? 0
-        pokemonNameLabel.text = pokemon?.name.capitalized
+    func cellConfigure(with name: String?) {
+        pokemonNameLabel.text = name?.capitalized
     }
 }
 

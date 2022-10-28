@@ -41,14 +41,14 @@ final class PokemonViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "\(viewModel?.model.name.capitalized ?? "")"
+        title = "\(viewModel?.model?.name.capitalized ?? "")"
         setupViews()
         setConstraints()
     }
     
     private var typesString: String {
         var text = ""
-        if let types = viewModel?.model.types {
+        if let types = viewModel?.model?.types {
             for type in types {
                 if !text.isEmpty {
                     text += ", "
@@ -80,14 +80,19 @@ private extension PokemonViewController {
         activityIndicator.startAnimating()
         getImage()
         
-        pokemonNameLabel.text = viewModel?.model.name.capitalized
+        if viewModel?.model != nil {
+            
+        }
+        pokemonNameLabel.text = viewModel?.model?.name.capitalized
         typeLabel.text =  "type: " + typesString
-        weightLabel.text = "weight: \(viewModel?.model.weight ?? 0) kg"
-        heightLabel.text = "height: \(viewModel?.model.height ?? 0) cm"
+        weightLabel.text = "weight: \(viewModel?.model?.weight ?? 0) kg"
+        heightLabel.text = "height: \(viewModel?.model?.height ?? 0) cm"
     }
     
+
+    
     func getImage() {
-        viewModel?.getPictureFrom(urlString: viewModel?.model.sprites.stringURL ?? "", completion: { image in
+        viewModel?.getPictureFrom(urlString: viewModel?.model?.sprites.stringURL ?? "", completion: { image in
             DispatchQueue.main.async {
                 self.activityIndicator.stopAnimating()
                 self.pokemonImageView.image = image

@@ -12,8 +12,8 @@ struct Pokemons: Codable {
 }
 
 struct PokemonListItem: Codable {
-    var name: String
-    var url: String = ""
+    let name: String
+    let url: String 
 
     var id: Int {
         let fileName = url

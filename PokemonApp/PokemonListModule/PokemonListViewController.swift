@@ -7,6 +7,7 @@
 
 import UIKit
 
+
 final class PokemonListViewController: UIViewController {
     
     private let pokemonListTableView: UITableView = {
@@ -73,14 +74,17 @@ private extension PokemonListViewController {
 extension PokemonListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel?.model.count ?? 0
+        return viewModel?.model.count ?? (viewModel?.getNumberOfPokemonsInBD() ?? 0)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: idPokemonListTableViewCell, for: indexPath) as? PokemonListTableViewCell else { return UITableViewCell() }
-        let item = viewModel?.model[indexPath.item]
-        cell.cellConfigure(with: item)
-        // cell.pokemonNameLabel.text = "Pokemon"
+        if let item = viewModel?.model[indexPath.row].name {
+            cell.cellConfigure(with: item)
+        } else {
+            let name = viewModel?.getPokemonsName(id: indexPath.row) ?? "Pokemon"
+            cell.cellConfigure(with: name)
+        }
         cell.accessoryType = .disclosureIndicator
         return cell
     }
@@ -95,8 +99,8 @@ extension PokemonListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        viewModel?.pokemonDidSelect(id: viewModel?.model[indexPath.item].id ?? 0)
-        print(indexPath.row)
+        viewModel?.pokemonDidSelect(id: viewModel?.model[indexPath.item].id ?? (indexPath.row + 1))
+        print(indexPath.row + 1)
         print(viewModel?.model[indexPath.item].name)
         print(viewModel?.model[indexPath.item].id)
     }
