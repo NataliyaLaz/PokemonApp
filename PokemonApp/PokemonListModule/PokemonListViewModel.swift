@@ -23,7 +23,6 @@ protocol PokemonListViewModelProtocol {
 }
 
 final class PokemonListViewModel: PokemonListViewModelProtocol {
-    
     private (set) var model = [PokemonListItem]()
     weak var delegate: PokemonListViewModelDelegate?
     let networkManager: NetworkManagerProtocol
@@ -35,21 +34,14 @@ final class PokemonListViewModel: PokemonListViewModelProtocol {
         self.networkManager = networkManager
         self.getPokemons()
     }
-    
-    private func getPokemons() {
-        networkManager.getPokemons() { [weak self] pockemonsList in
-            self?.model = pockemonsList
-            self?.delegate?.updateUI()
-        }
-    }
-    
+
     func getNumberOfPokemonsInBD() -> Int? {
-        pokemonArray = localRealm.objects(PokemonRealmModel.self).sorted(byKeyPath: "id")
+        pokemonArray = localRealm.objects(PokemonRealmModel.self).sorted(byKeyPath: Constants.idKeyPath)
         return pokemonArray.count
     }
     
     func getPokemonsName(id: Int) -> String? {
-        pokemonArray = localRealm.objects(PokemonRealmModel.self).sorted(byKeyPath: "id")
+        pokemonArray = localRealm.objects(PokemonRealmModel.self).sorted(byKeyPath: Constants.idKeyPath)
         return pokemonArray.filter { $0.id == id }.first?.name
     }
     
@@ -62,7 +54,7 @@ final class PokemonListViewModel: PokemonListViewModelProtocol {
                 pokemonModel.weight = pokemon.weight
                 pokemonModel.height = pokemon.height
                 pokemonModel.id = pokemon.id
-                pokemonModel.types = pokemon.types.first?.type.name ?? "Pokemon"
+                pokemonModel.types = pokemon.types.first?.type.name ?? Constants.defaultName
                 guard let url = URL(string: pokemon.sprites.stringURL) else { return }
                 if let imageData = try? Data(contentsOf: url ) {
                     pokemonModel.image = imageData
@@ -84,6 +76,16 @@ final class PokemonListViewModel: PokemonListViewModelProtocol {
     func pokemonWasSelected(id: Int) {
         DispatchQueue.main.async {
             self.delegate?.showPokemonInformation(id: id)
+        }
+    }
+}
+
+// MARK: - Private extension
+private extension PokemonListViewModel {
+    func getPokemons() {
+        networkManager.getPokemons() { [weak self] pockemonsList in
+            self?.model = pockemonsList
+            self?.delegate?.updateUI()
         }
     }
 }

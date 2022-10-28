@@ -8,8 +8,7 @@
 import Foundation
 import RealmSwift
 
-class PokemonRealmModel: Object {
-    
+final class PokemonRealmModel: Object {
     @Persisted var name: String = ""
     @Persisted var height: Int = 0
     @Persisted var weight: Int = 0

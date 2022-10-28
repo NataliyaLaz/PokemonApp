@@ -8,7 +8,6 @@
 import UIKit
 
 final class PokemonViewController: UIViewController {
-    
     private var pokemonNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .largeTitle)
@@ -21,7 +20,7 @@ final class PokemonViewController: UIViewController {
     private let pokemonImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.backgroundColor = .primaryOrange
-        imageView.layer.borderWidth = 1.4
+        imageView.layer.borderWidth = Constants.borderWidth
         imageView.layer.borderColor = UIColor.borderColor.cgColor
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
@@ -41,7 +40,7 @@ final class PokemonViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "\(viewModel?.model?.name.capitalized ?? "")"
+        title = "\(viewModel?.model?.name.capitalized ?? Constants.pokemonVCTitle)"
         setupViews()
         setConstraints()
     }
@@ -62,7 +61,6 @@ final class PokemonViewController: UIViewController {
 
 // MARK: - Private extension
 private extension PokemonViewController {
-    
     func setupViews() {
         view.backgroundColor = .primaryTeal
         labelsStackView = UIStackView(arrangedSubviews: [typeLabel, weightLabel, heightLabel])
@@ -76,21 +74,22 @@ private extension PokemonViewController {
         stackView.alignment = .center
         stackView.spacing = UIStackView.spacingUseSystem
         view.addSubview(stackView)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(activityIndicator)
         activityIndicator.startAnimating()
         getImage()
         
         if viewModel?.model != nil {
             pokemonNameLabel.text = viewModel?.model?.name.capitalized
-            typeLabel.text =  "type: " + typesString
-            weightLabel.text = "weight: \(viewModel?.model?.weight ?? 0) kg"
-            heightLabel.text = "height: \(viewModel?.model?.height ?? 0) cm"
+            typeLabel.text = Constants.typeLabelText + typesString
+            weightLabel.text = Constants.weightLabelText + "\(viewModel?.model?.weight ?? Constants.defaultWeight)" + Constants.weightMeasurementText
+            heightLabel.text = Constants.heightLabelText + "\(viewModel?.model?.height ?? Constants.defaultHeight)" + Constants.weightMeasurementText
         } else {
             checkDB()
             pokemonNameLabel.text = viewModel?.pokemonModel.name.capitalized
-            typeLabel.text =  "type: " + (viewModel?.pokemonModel.types ?? "type")
-            weightLabel.text = "weight: \(viewModel?.pokemonModel.weight ?? 100) kg"
-            heightLabel.text = "height: \(viewModel?.pokemonModel.height ?? 100) cm"
+            typeLabel.text = Constants.typeLabelText + (viewModel?.pokemonModel.types ?? Constants.defaultType)
+            weightLabel.text = Constants.weightLabelText + "\(viewModel?.pokemonModel.weight ?? Constants.defaultWeight)" + Constants.weightMeasurementText
+            heightLabel.text = Constants.heightLabelText + "\(viewModel?.pokemonModel.height ?? Constants.defaultHeight)" + Constants.weightMeasurementText
         }
     }
     
@@ -119,6 +118,8 @@ private extension PokemonViewController {
         NSLayoutConstraint.activate([
             pokemonImageView.widthAnchor.constraint(equalTo: pokemonImageView.heightAnchor),
             pokemonImageView.widthAnchor.constraint(equalToConstant: UIScreen.main.bounds.width / 2),
+            activityIndicator.centerXAnchor.constraint(equalTo: pokemonImageView.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: pokemonImageView.centerYAnchor),
             stackView.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: UIScreen.main.bounds.height * 0.1)
         ])

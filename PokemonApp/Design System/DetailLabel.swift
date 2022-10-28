@@ -8,7 +8,6 @@
 import UIKit
 
 final class DetailLabel: UILabel {
-
     convenience init(text: String) {
         self.init()
         configure()

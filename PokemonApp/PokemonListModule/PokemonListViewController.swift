@@ -7,9 +7,7 @@
 
 import UIKit
 
-
 final class PokemonListViewController: UIViewController {
-    
     private let pokemonListTableView: UITableView = {
         let tableView = UITableView()
         tableView.backgroundColor = .clear
@@ -21,14 +19,14 @@ final class PokemonListViewController: UIViewController {
         return tableView
     }()
     
-    private let idPokemonListTableViewCell = "idPokemonListTableViewCell"
+    private let idPokemonListTableViewCell = Constants.cellId
     
     var viewModel: PokemonListViewModelProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .primaryTeal
-        title = "Pokemon List"
+        title = Constants.listVCTitle
         setupViews()
         setConstraints()
         setDelegates()
@@ -39,7 +37,6 @@ final class PokemonListViewController: UIViewController {
 
 // MARK: - Private extension
 private extension PokemonListViewController {
-    
     func setupViews() {
         view.addSubview(pokemonListTableView)
     }
@@ -72,7 +69,6 @@ private extension PokemonListViewController {
 
 // MARK: - UITableViewDataSource
 extension PokemonListViewController: UITableViewDataSource {
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return viewModel?.model.count ?? (viewModel?.getNumberOfPokemonsInBD() ?? 0)
     }
@@ -82,7 +78,7 @@ extension PokemonListViewController: UITableViewDataSource {
         if let item = viewModel?.model[indexPath.row].name {
             cell.cellConfigure(with: item)
         } else {
-            let name = viewModel?.getPokemonsName(id: indexPath.row) ?? "Pokemon"
+            let name = viewModel?.getPokemonsName(id: indexPath.row) ?? Constants.defaultName
             cell.cellConfigure(with: name)
         }
         cell.accessoryType = .disclosureIndicator
@@ -92,9 +88,8 @@ extension PokemonListViewController: UITableViewDataSource {
 
 // MARK: - UITableViewDelegate
 extension PokemonListViewController: UITableViewDelegate {
-    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 100
+        Constants.heightForARow
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -104,15 +99,11 @@ extension PokemonListViewController: UITableViewDelegate {
         } else {
             viewModel?.pokemonWasSelected(id: indexPath.row + 1)
         }
-        print(indexPath.row + 1)
-        print(viewModel?.model[indexPath.item].name)
-        print(viewModel?.model[indexPath.item].id)
     }
 }
 
 // MARK: - PokemonListViewModelDelegate
 extension PokemonListViewController: PokemonListViewModelDelegate {
-    
     func updateUI() {
         DispatchQueue.main.async {
             self.pokemonListTableView.reloadData()

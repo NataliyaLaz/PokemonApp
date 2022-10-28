@@ -14,7 +14,6 @@ protocol NetworkManagerProtocol {
 }
 
 final class NetworkManager: NetworkManagerProtocol {
-    
     private let urlString = "https://pokeapi.co/api/v2/"
     private let session = URLSession.shared
     private let imageCache = NSCache<NSString, UIImage>()
@@ -43,7 +42,6 @@ final class NetworkManager: NetworkManagerProtocol {
     }
     
     func getPokemon(id: Int, completion: @escaping (Pokemon) -> ()) {
-        
         guard let url = URL(string: "\(urlString)pokemon/\(id)") else {
             return
         }
