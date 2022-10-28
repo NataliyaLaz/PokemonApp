@@ -81,23 +81,38 @@ private extension PokemonViewController {
         getImage()
         
         if viewModel?.model != nil {
-            
+            pokemonNameLabel.text = viewModel?.model?.name.capitalized
+            typeLabel.text =  "type: " + typesString
+            weightLabel.text = "weight: \(viewModel?.model?.weight ?? 0) kg"
+            heightLabel.text = "height: \(viewModel?.model?.height ?? 0) cm"
+        } else {
+            checkDB()
+            pokemonNameLabel.text = viewModel?.pokemonModel.name.capitalized
+            typeLabel.text =  "type: " + (viewModel?.pokemonModel.types ?? "type")
+            weightLabel.text = "weight: \(viewModel?.pokemonModel.weight ?? 100) kg"
+            heightLabel.text = "height: \(viewModel?.pokemonModel.height ?? 100) cm"
         }
-        pokemonNameLabel.text = viewModel?.model?.name.capitalized
-        typeLabel.text =  "type: " + typesString
-        weightLabel.text = "weight: \(viewModel?.model?.weight ?? 0) kg"
-        heightLabel.text = "height: \(viewModel?.model?.height ?? 0) cm"
     }
     
-
+    private func checkDB() {
+        viewModel?.getDataFromDB()
+    }
     
-    func getImage() {
-        viewModel?.getPictureFrom(urlString: viewModel?.model?.sprites.stringURL ?? "", completion: { image in
+    private func getImage() {
+        if viewModel?.model != nil  {
+            viewModel?.getPictureFrom(urlString: viewModel?.model?.sprites.stringURL ?? "", completion: { image in
+                DispatchQueue.main.async {
+                    self.activityIndicator.stopAnimating()
+                    self.pokemonImageView.image = image
+                }
+            })
+        } else {
+            guard let imageData = viewModel?.getPictureFromDB() else { return }
             DispatchQueue.main.async {
                 self.activityIndicator.stopAnimating()
-                self.pokemonImageView.image = image
+                self.pokemonImageView.image = UIImage(data: imageData)
             }
-        })
+        }
     }
     
     func setConstraints() {

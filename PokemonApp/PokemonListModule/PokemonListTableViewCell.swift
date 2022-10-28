@@ -11,14 +11,14 @@ final class PokemonListTableViewCell: UITableViewCell {
     private let backgroundCell: UIView = {
         let view = UIView()
         view.backgroundColor = .primaryOrange
-        view.layer.cornerRadius = 8
-        view.layer.borderWidth = 1.4
+        view.layer.cornerRadius = LayoutConstants.cornerRadius8
+        view.layer.borderWidth = LayoutConstants.borderWidth
         view.layer.borderColor = UIColor.borderColor.cgColor
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
     
-    let pokemonNameLabel: UILabel = {
+    private let pokemonNameLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.preferredFont(forTextStyle: .largeTitle)
         label.textColor = .textColor
@@ -53,16 +53,16 @@ private extension PokemonListTableViewCell {
 
     func setConstraints() {
         NSLayoutConstraint.activate([
-            backgroundCell.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-            backgroundCell.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
-            backgroundCell.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8),
-            backgroundCell.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8)
+            backgroundCell.topAnchor.constraint(equalTo: topAnchor, constant: LayoutConstants.inset8),
+            backgroundCell.leadingAnchor.constraint(equalTo: leadingAnchor, constant: LayoutConstants.inset8),
+            backgroundCell.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -LayoutConstants.inset8),
+            backgroundCell.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -LayoutConstants.inset8)
         ])
 
         NSLayoutConstraint.activate([
             pokemonNameLabel.centerYAnchor.constraint(equalTo: backgroundCell.centerYAnchor),
-            pokemonNameLabel.leadingAnchor.constraint(equalTo: backgroundCell.leadingAnchor, constant: 8),
-            pokemonNameLabel.trailingAnchor.constraint(equalTo: backgroundCell.trailingAnchor, constant: -8)
+            pokemonNameLabel.leadingAnchor.constraint(equalTo: backgroundCell.leadingAnchor, constant: LayoutConstants.inset8),
+            pokemonNameLabel.trailingAnchor.constraint(equalTo: backgroundCell.trailingAnchor, constant: -LayoutConstants.inset8)
         ])
     }
 }

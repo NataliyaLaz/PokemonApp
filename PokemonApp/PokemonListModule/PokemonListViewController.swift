@@ -99,7 +99,11 @@ extension PokemonListViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        viewModel?.pokemonDidSelect(id: viewModel?.model[indexPath.item].id ?? (indexPath.row + 1))
+        if let model = viewModel?.model {
+            viewModel?.pokemonDidSelect(id: model[indexPath.item].id)
+        } else {
+            viewModel?.pokemonWasSelected(id: indexPath.row + 1)
+        }
         print(indexPath.row + 1)
         print(viewModel?.model[indexPath.item].name)
         print(viewModel?.model[indexPath.item].id)
@@ -117,7 +121,18 @@ extension PokemonListViewController: PokemonListViewModelDelegate {
     
     func showPokemonInformation(pokemon: Pokemon) {
         if let networkManager = viewModel?.networkManager {
-            let viewModel = PokemonViewModel(model: pokemon, networkManager: networkManager)
+            let viewModel = PokemonViewModel(model: pokemon, networkManager: networkManager, id: pokemon.id)
+            DispatchQueue.main.async {
+                let pokemonVC = PokemonViewController()
+                pokemonVC.viewModel = viewModel
+                self.navigationController?.pushViewController(pokemonVC, animated: true)
+            }
+        }
+    }
+    
+    func showPokemonInformation(id: Int) {
+        if let networkManager = viewModel?.networkManager {
+            let viewModel = PokemonViewModel(model: nil, networkManager: networkManager, id: id)
             DispatchQueue.main.async {
                 let pokemonVC = PokemonViewController()
                 pokemonVC.viewModel = viewModel
