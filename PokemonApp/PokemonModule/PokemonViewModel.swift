@@ -10,7 +10,7 @@ import RealmSwift
 
 protocol PokemonViewModelProtocol {
     var model: Pokemon? { get }
-    func getPictureFrom(urlString: String, completion: @escaping (UIImage?) -> ())
+    func getPictureFrom(urlString: String, completion: @escaping (Result<UIImage, Error>) -> ())
     func getPictureFromDB() -> Data?
 }
 
@@ -35,7 +35,7 @@ final class PokemonViewModel: PokemonViewModelProtocol {
         pokemonModel = pokemonArray[(id ?? 0) - 1]
     }
     
-    func getPictureFrom(urlString: String, completion: @escaping (UIImage?) -> ()) {
+    func getPictureFrom(urlString: String, completion: @escaping (Result<UIImage, Error>) -> ()) {
         networkManager.getImageUsingURL(urlString, completion: completion)
     }
     

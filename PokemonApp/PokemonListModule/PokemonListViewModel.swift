@@ -11,6 +11,7 @@ protocol PokemonListViewModelDelegate: AnyObject {
     func updateUI()
     func showPokemonInformation(pokemon: Pokemon)
     func showPokemonInformation(id: Int)
+    func showAlert(error:Error)
 }
 
 protocol PokemonListViewModelProtocol {
@@ -48,26 +49,36 @@ final class PokemonListViewModel: PokemonListViewModelProtocol {
     func pokemonDidSelect(id: Int) {
         pokemonArray = localRealm.objects(PokemonRealmModel.self)
         if !pokemonArray.contains(where: { $0.id == id }) {
-            networkManager.getPokemon(id: id) { [weak self] pokemon in
-                let pokemonModel = PokemonRealmModel()
-                pokemonModel.name = pokemon.name
-                pokemonModel.weight = pokemon.weight
-                pokemonModel.height = pokemon.height
-                pokemonModel.id = pokemon.id
-                pokemonModel.types = pokemon.types.first?.type.name ?? Constants.defaultName
-                guard let url = URL(string: pokemon.sprites.stringURL) else { return }
-                if let imageData = try? Data(contentsOf: url ) {
-                    pokemonModel.image = imageData
-                }
-                DispatchQueue.main.async {
-                    RealmManager.shared.savePokemon(model: pokemonModel)
-                    self?.delegate?.showPokemonInformation(pokemon: pokemon)
+            networkManager.getPokemon(id: id) { [weak self] result in
+                switch result {
+                case .success(let pokemon):
+                    let pokemonModel = PokemonRealmModel()
+                    pokemonModel.name = pokemon.name
+                    pokemonModel.weight = pokemon.weight
+                    pokemonModel.height = pokemon.height
+                    pokemonModel.id = pokemon.id
+                    pokemonModel.types = pokemon.types.first?.type.name ?? Constants.defaultName
+                    guard let url = URL(string: pokemon.sprites.stringURL) else { return }
+                    if let imageData = try? Data(contentsOf: url ) {
+                        pokemonModel.image = imageData
+                    }
+                    DispatchQueue.main.async {
+                        RealmManager.shared.savePokemon(model: pokemonModel)
+                        self?.delegate?.showPokemonInformation(pokemon: pokemon)
+                    }
+                case .failure(let error):
+                    self?.delegate?.showAlert(error: error)
                 }
             }
         } else {
-            networkManager.getPokemon(id: id) { [weak self] pokemon in
-                DispatchQueue.main.async {
-                    self?.delegate?.showPokemonInformation(pokemon: pokemon)
+            networkManager.getPokemon(id: id) { [weak self] result in
+                switch result {
+                case .success(let pokemon):
+                    DispatchQueue.main.async {
+                        self?.delegate?.showPokemonInformation(pokemon: pokemon)
+                    }
+                case .failure(let error):
+                    self?.delegate?.showAlert(error: error)
                 }
             }
         }
@@ -83,9 +94,15 @@ final class PokemonListViewModel: PokemonListViewModelProtocol {
 // MARK: - Private extension
 private extension PokemonListViewModel {
     func getPokemons() {
-        networkManager.getPokemons() { [weak self] pockemonsList in
-            self?.model = pockemonsList
-            self?.delegate?.updateUI()
+        networkManager.getPokemons() { [weak self] result in
+            switch result {
+            case .success(let pokemonList):
+                self?.model = pokemonList
+                self?.delegate?.updateUI()
+
+            case .failure(let error):
+                self?.delegate?.showAlert(error: error)
+            }
         }
     }
 }

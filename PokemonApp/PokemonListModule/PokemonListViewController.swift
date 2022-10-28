@@ -131,5 +131,11 @@ extension PokemonListViewController: PokemonListViewModelDelegate {
             }
         }
     }
+    
+    func showAlert(error: Error) {
+        let message = error.localizedDescription
+        self.alertOK(title: Constants.alertErrorTitle, message: message)
+    }
+    
 }
 

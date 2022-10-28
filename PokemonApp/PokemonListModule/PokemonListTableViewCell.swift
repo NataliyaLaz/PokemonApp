@@ -55,14 +55,14 @@ private extension PokemonListTableViewCell {
         NSLayoutConstraint.activate([
             backgroundCell.topAnchor.constraint(equalTo: topAnchor, constant: Constants.inset8),
             backgroundCell.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.inset8),
-            backgroundCell.trailingAnchor.constraint(equalTo: trailingAnchor, constant: Constants.inset8),
-            backgroundCell.bottomAnchor.constraint(equalTo: bottomAnchor, constant: Constants.inset8)
+            backgroundCell.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.inset8),
+            backgroundCell.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.inset8)
         ])
 
         NSLayoutConstraint.activate([
             pokemonNameLabel.centerYAnchor.constraint(equalTo: backgroundCell.centerYAnchor),
             pokemonNameLabel.leadingAnchor.constraint(equalTo: backgroundCell.leadingAnchor, constant: Constants.inset8),
-            pokemonNameLabel.trailingAnchor.constraint(equalTo: backgroundCell.trailingAnchor, constant: Constants.inset8)
+            pokemonNameLabel.trailingAnchor.constraint(equalTo: backgroundCell.trailingAnchor, constant: -Constants.inset8)
         ])
     }
 }

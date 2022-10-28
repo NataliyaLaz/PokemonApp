@@ -99,10 +99,16 @@ private extension PokemonViewController {
     
     private func getImage() {
         if viewModel?.model != nil  {
-            viewModel?.getPictureFrom(urlString: viewModel?.model?.sprites.stringURL ?? "", completion: { image in
-                DispatchQueue.main.async {
-                    self.activityIndicator.stopAnimating()
-                    self.pokemonImageView.image = image
+            viewModel?.getPictureFrom(urlString: viewModel?.model?.sprites.stringURL ?? "", completion: { result in
+                switch result {
+                case .success(let image):
+                    DispatchQueue.main.async {
+                        self.activityIndicator.stopAnimating()
+                        self.pokemonImageView.image = image
+                    }
+                case .failure(let error):
+                    let message = error.localizedDescription
+                    self.alertOK(title: Constants.alertErrorTitle, message: message)
                 }
             })
         } else {

@@ -48,6 +48,15 @@ enum Constants {
     static let weightLabelText: String = "weight: "
     static let weightMeasurementText: String = "kg"
     static let defaultWeight: Int = 100
+    
+    // MARK: - URLString
+    static let urlString: String = "https://pokeapi.co/api/v2/"
+    static let pokemonString: String = "pokemon/"
+    static let urlAddsString: String = "pokemon-species?limit=905"
+    
+    // MARK: - Alert
+    static let alertButtonTitle: String = "OK"
+    static let alertErrorTitle: String = "Error"
 }
 
 

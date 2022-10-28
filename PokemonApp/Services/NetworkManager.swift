@@ -8,18 +8,18 @@
 import UIKit
 
 protocol NetworkManagerProtocol {
-    func getPokemons(completion: @escaping ([PokemonListItem]) -> ())
-    func getPokemon(id: Int, completion: @escaping (Pokemon) -> ())
-    func getImageUsingURL(_ urlString: String, completion: @escaping (UIImage?) -> ())
+    func getPokemons(completion: @escaping (Result<[PokemonListItem], Error>) -> ())
+    func getPokemon(id: Int, completion: @escaping (Result<Pokemon, Error>) -> ())
+    func getImageUsingURL(_ urlString: String, completion: @escaping (Result<UIImage, Error>) -> ())
 }
 
 final class NetworkManager: NetworkManagerProtocol {
-    private let urlString = "https://pokeapi.co/api/v2/"
+    private let urlString = Constants.urlString
     private let session = URLSession.shared
     private let imageCache = NSCache<NSString, UIImage>()
     
-    func getPokemons(completion: @escaping ([PokemonListItem]) -> ()) {
-        guard let url = URL(string: "\(urlString)pokemon-species?limit=905") else {
+    func getPokemons(completion: @escaping (Result<[PokemonListItem], Error>) -> ()) {
+        guard let url = URL(string: urlString + Constants.urlAddsString) else {
             return
         }
         let task = session.dataTask(with: url, completionHandler: { data, response, error in
@@ -28,21 +28,20 @@ final class NetworkManager: NetworkManagerProtocol {
                      let decoder = JSONDecoder()
                      let response = try decoder.decode(Pokemons.self, from: data)
                      let pokemonsList = response.results
-                     completion(pokemonsList)
+                    completion(.success(pokemonsList))
                 } catch {
-                    print(error)
+                    completion(.failure(error))
                 }
             }
-            
             if let error = error {
-                print(error)
+                completion(.failure(error))
             }
         })
         task.resume()
     }
     
-    func getPokemon(id: Int, completion: @escaping (Pokemon) -> ()) {
-        guard let url = URL(string: "\(urlString)pokemon/\(id)") else {
+    func getPokemon(id: Int, completion: @escaping (Result<Pokemon, Error>) -> ())  {
+        guard let url = URL(string: "\(urlString)\(Constants.pokemonString)\(id)") else {
             return
         }
         let task = session.dataTask(with: url, completionHandler: { data, response, error in
@@ -50,39 +49,35 @@ final class NetworkManager: NetworkManagerProtocol {
                 do {
                      let decoder = JSONDecoder()
                      let response = try decoder.decode(Pokemon.self, from: data)
-                     completion(response)
+                    completion(.success(response))
                 } catch {
-                    print(error)
+                    completion(.failure(error))
                 }
             }
-            
             if let error = error {
-                print(error)
+                completion(.failure(error))
             }
         })
         task.resume()
     }
     
-    func getImageUsingURL(_ urlString: String, completion: @escaping (UIImage?) -> ()) {
+    func getImageUsingURL(_ urlString: String, completion: @escaping (Result<UIImage, Error>) -> ()) {
         guard let url = URL(string: urlString) else {
             return
         }
-        
         if let imageFromCache = imageCache.object(forKey: urlString as NSString) {
-            completion(imageFromCache)
+            completion(.success(imageFromCache))
             return
         }
-        
-        let task = session.dataTask(with: url, completionHandler: { [weak self] data, responce, error in
+        let task = session.dataTask(with: url, completionHandler: { [weak self] data, response, error in
             if let data = data {
                 if let image = UIImage(data: data) {
-                    completion(image)
+                    completion(.success(image))
                     self?.imageCache.setObject(image, forKey: urlString as NSString)
                 }
             }
-            
             if let error = error {
-                print(error)
+                completion(.failure(error))
             }
         })
         task.resume()
