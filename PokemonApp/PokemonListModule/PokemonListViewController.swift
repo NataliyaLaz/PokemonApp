@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Swinject
 
 final class PokemonListViewController: UIViewController {
     private let pokemonListTableView: UITableView = {
@@ -21,7 +22,24 @@ final class PokemonListViewController: UIViewController {
     
     private let idPokemonListTableViewCell = Constants.cellId
     
+    private let container: Container = {
+        let container = Container()
+        container.register(NetworkManagerProtocol.self) { _ in
+            return NetworkManager()
+        }
+        return container
+    }()
+    
     var viewModel: PokemonListViewModelProtocol?
+    
+    init(viewModel: PokemonListViewModelProtocol?) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -104,6 +122,7 @@ extension PokemonListViewController: UITableViewDelegate {
 
 // MARK: - PokemonListViewModelDelegate
 extension PokemonListViewController: PokemonListViewModelDelegate {
+    
     func updateUI() {
         DispatchQueue.main.async {
             self.pokemonListTableView.reloadData()
@@ -111,24 +130,34 @@ extension PokemonListViewController: PokemonListViewModelDelegate {
     }
     
     func showPokemonInformation(pokemon: Pokemon) {
-        if let networkManager = viewModel?.networkManager {
-            let viewModel = PokemonViewModel(model: pokemon, networkManager: networkManager, id: pokemon.id)
-            DispatchQueue.main.async {
-                let pokemonVC = PokemonViewController()
-                pokemonVC.viewModel = viewModel
-                self.navigationController?.pushViewController(pokemonVC, animated: true)
-            }
+        container.register(PokemonViewModelProtocol.self) { resolver in
+            return PokemonViewModel(model: pokemon, networkManager: resolver.resolve(NetworkManagerProtocol.self)!, id: pokemon.id)
+        }
+        
+        container.register(PokemonViewController.self) { resolver in
+            let vc = PokemonViewController(viewModel: resolver.resolve(PokemonViewModelProtocol.self))
+            return vc
+        }
+        
+        DispatchQueue.main.async {
+            guard let pokemonVC = self.container.resolve(PokemonViewController.self) else { return }
+            self.navigationController?.pushViewController(pokemonVC, animated: true)
         }
     }
     
     func showPokemonInformation(id: Int) {
-        if let networkManager = viewModel?.networkManager {
-            let viewModel = PokemonViewModel(model: nil, networkManager: networkManager, id: id)
-            DispatchQueue.main.async {
-                let pokemonVC = PokemonViewController()
-                pokemonVC.viewModel = viewModel
-                self.navigationController?.pushViewController(pokemonVC, animated: true)
-            }
+        container.register(PokemonViewModelProtocol.self) { resolver in
+            return PokemonViewModel(model: nil, networkManager: resolver.resolve(NetworkManagerProtocol.self)!, id: id)
+        }
+        
+        container.register(PokemonViewController.self) { resolver in
+            let vc = PokemonViewController(viewModel: resolver.resolve(PokemonViewModelProtocol.self))
+            return vc
+        }
+        
+        DispatchQueue.main.async {
+            guard let pokemonVC = self.container.resolve(PokemonViewController.self) else { return }
+            self.navigationController?.pushViewController(pokemonVC, animated: true)
         }
     }
     
@@ -136,6 +165,5 @@ extension PokemonListViewController: PokemonListViewModelDelegate {
         let message = error.localizedDescription
         self.alertOK(title: Constants.alertErrorTitle, message: message)
     }
-    
 }
 
