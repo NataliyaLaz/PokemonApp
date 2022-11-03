@@ -28,6 +28,7 @@ MVVM
 
 - UIKit
 - Realm
+- Swinject
 
 ## Screenshots
 <img width="250" alt="Screenshot 2022-10-28 at 19 54 08" src="https://user-images.githubusercontent.com/93728977/198691746-03990fff-55c6-4f6d-a220-9ed219b658be.png"><img width="250" alt="Screenshot 2022-10-28 at 19 53 55" src="https://user-images.githubusercontent.com/93728977/198691443-b2d6ab8f-d849-4733-a1b6-d3436877655b.png">
