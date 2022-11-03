@@ -36,7 +36,16 @@ final class PokemonViewController: UIViewController {
     private var labelsStackView = UIStackView()
     private var stackView = UIStackView()
     
-    var viewModel: PokemonViewModel?
+    var viewModel: PokemonViewModelProtocol?
+    
+    init(viewModel: PokemonViewModelProtocol?) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

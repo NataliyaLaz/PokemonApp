@@ -12,6 +12,8 @@ protocol PokemonViewModelProtocol {
     var model: Pokemon? { get }
     func getPictureFrom(urlString: String, completion: @escaping (Result<UIImage, Error>) -> ())
     func getPictureFromDB() -> Data?
+    func getDataFromDB()
+    var pokemonModel: PokemonRealmModel { get }
 }
 
 final class PokemonViewModel: PokemonViewModelProtocol {

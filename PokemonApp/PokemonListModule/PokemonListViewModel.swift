@@ -16,7 +16,7 @@ protocol PokemonListViewModelDelegate: AnyObject {
 
 protocol PokemonListViewModelProtocol {
     var model: [PokemonListItem] { get }
-    var networkManager: NetworkManagerProtocol { get }
+    var networkManager: NetworkManagerProtocol? { get }
     func pokemonDidSelect(id: Int)
     func pokemonWasSelected(id: Int)
     func getNumberOfPokemonsInBD() -> Int?
@@ -26,7 +26,7 @@ protocol PokemonListViewModelProtocol {
 final class PokemonListViewModel: PokemonListViewModelProtocol {
     private (set) var model = [PokemonListItem]()
     weak var delegate: PokemonListViewModelDelegate?
-    let networkManager: NetworkManagerProtocol
+    let networkManager: NetworkManagerProtocol?
     
     private let localRealm = try! Realm()
     private var pokemonArray: Results<PokemonRealmModel>!
@@ -49,7 +49,7 @@ final class PokemonListViewModel: PokemonListViewModelProtocol {
     func pokemonDidSelect(id: Int) {
         pokemonArray = localRealm.objects(PokemonRealmModel.self)
         if !pokemonArray.contains(where: { $0.id == id }) {
-            networkManager.getPokemon(id: id) { [weak self] result in
+            networkManager?.getPokemon(id: id) { [weak self] result in
                 switch result {
                 case .success(let pokemon):
                     let pokemonModel = PokemonRealmModel()
@@ -71,7 +71,7 @@ final class PokemonListViewModel: PokemonListViewModelProtocol {
                 }
             }
         } else {
-            networkManager.getPokemon(id: id) { [weak self] result in
+            networkManager?.getPokemon(id: id) { [weak self] result in
                 switch result {
                 case .success(let pokemon):
                     DispatchQueue.main.async {
@@ -94,7 +94,7 @@ final class PokemonListViewModel: PokemonListViewModelProtocol {
 // MARK: - Private extension
 private extension PokemonListViewModel {
     func getPokemons() {
-        networkManager.getPokemons() { [weak self] result in
+        networkManager?.getPokemons() { [weak self] result in
             switch result {
             case .success(let pokemonList):
                 self?.model = pokemonList

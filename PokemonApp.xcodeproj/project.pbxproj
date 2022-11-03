@@ -23,8 +23,10 @@
 		88AA0AEE290AAA5800ACF75A /* DetailLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AA0AED290AAA5800ACF75A /* DetailLabel.swift */; };
 		88AA0AF0290AB5AA00ACF75A /* PokemonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AA0AEF290AB5AA00ACF75A /* PokemonViewModel.swift */; };
 		88AA0AF3290AD0B200ACF75A /* UIColor + Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88AA0AF2290AD0B200ACF75A /* UIColor + Extension.swift */; };
+		88BCC4F4291292FF003193CD /* Swinject in Frameworks */ = {isa = PBXBuildFile; productRef = 88BCC4F3291292FF003193CD /* Swinject */; };
 		88BD4799290BF7D8005D04D4 /* RealmManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BD4798290BF7D8005D04D4 /* RealmManager.swift */; };
 		88BD479D290C2EDE005D04D4 /* SimpleAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88BD479C290C2EDE005D04D4 /* SimpleAlert.swift */; };
+		88D57A2A29141C0F00157284 /* Container.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D57A2929141C0F00157284 /* Container.swift */; };
 		88DDFCF629096C2A00F8ED4A /* PokemonListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88DDFCF529096C2A00F8ED4A /* PokemonListViewModel.swift */; };
 		88DDFCF82909745A00F8ED4A /* PokemonModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88DDFCF72909745A00F8ED4A /* PokemonModel.swift */; };
 /* End PBXBuildFile section */
@@ -48,6 +50,7 @@
 		88AA0AF2290AD0B200ACF75A /* UIColor + Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor + Extension.swift"; sourceTree = "<group>"; };
 		88BD4798290BF7D8005D04D4 /* RealmManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RealmManager.swift; sourceTree = "<group>"; };
 		88BD479C290C2EDE005D04D4 /* SimpleAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleAlert.swift; sourceTree = "<group>"; };
+		88D57A2929141C0F00157284 /* Container.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Container.swift; sourceTree = "<group>"; };
 		88DDFCF529096C2A00F8ED4A /* PokemonListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonListViewModel.swift; sourceTree = "<group>"; };
 		88DDFCF72909745A00F8ED4A /* PokemonModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PokemonModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -59,6 +62,7 @@
 			files = (
 				8872238E290BD95100EABDB6 /* RealmSwift in Frameworks */,
 				8872238C290BD95100EABDB6 /* Realm in Frameworks */,
+				88BCC4F4291292FF003193CD /* Swinject in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,6 +82,7 @@
 		882DB19C290845C200F29664 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				88D57A2929141C0F00157284 /* Container.swift */,
 				882DB19D290845E700F29664 /* NetworkManager.swift */,
 				88BD4798290BF7D8005D04D4 /* RealmManager.swift */,
 			);
@@ -174,6 +179,7 @@
 			packageProductDependencies = (
 				8872238B290BD95100EABDB6 /* Realm */,
 				8872238D290BD95100EABDB6 /* RealmSwift */,
+				88BCC4F3291292FF003193CD /* Swinject */,
 			);
 			productName = PokemonApp;
 			productReference = 885EB8D52906D9650092671A /* PokemonApp.app */;
@@ -205,6 +211,7 @@
 			mainGroup = 885EB8CC2906D9650092671A;
 			packageReferences = (
 				8872238A290BD95100EABDB6 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				88BCC4F2291292FF003193CD /* XCRemoteSwiftPackageReference "Swinject" */,
 			);
 			productRefGroup = 885EB8D62906D9650092671A /* Products */;
 			projectDirPath = "";
@@ -248,6 +255,7 @@
 				88AA0AEE290AAA5800ACF75A /* DetailLabel.swift in Sources */,
 				88BD479D290C2EDE005D04D4 /* SimpleAlert.swift in Sources */,
 				885EB8DB2906D9650092671A /* SceneDelegate.swift in Sources */,
+				88D57A2A29141C0F00157284 /* Container.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -465,6 +473,14 @@
 				minimumVersion = 10.32.1;
 			};
 		};
+		88BCC4F2291292FF003193CD /* XCRemoteSwiftPackageReference "Swinject" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Swinject/Swinject";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -477,6 +493,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8872238A290BD95100EABDB6 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
+		};
+		88BCC4F3291292FF003193CD /* Swinject */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 88BCC4F2291292FF003193CD /* XCRemoteSwiftPackageReference "Swinject" */;
+			productName = Swinject;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
