@@ -57,6 +57,12 @@ enum Constants {
     // MARK: - Alert
     static let alertButtonTitle: String = "OK"
     static let alertErrorTitle: String = "Error"
+    
+    // MARK: - Swinject
+    static let pokemonViewModelName: String = "Pokemon"
+    static let pokemonVCNameModel: String = "Pokemon"
+    static let pokemonViewModelNameId: String = "id"
+    static let pokemonVCNameId: String = "id"
 }
 
 

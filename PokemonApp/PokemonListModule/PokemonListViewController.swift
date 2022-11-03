@@ -21,15 +21,7 @@ final class PokemonListViewController: UIViewController {
     }()
     
     private let idPokemonListTableViewCell = Constants.cellId
-    
-    private let container: Container = {
-        let container = Container()
-        container.register(NetworkManagerProtocol.self) { _ in
-            return NetworkManager()
-        }
-        return container
-    }()
-    
+
     var viewModel: PokemonListViewModelProtocol?
     
     init(viewModel: PokemonListViewModelProtocol?) {
@@ -130,33 +122,15 @@ extension PokemonListViewController: PokemonListViewModelDelegate {
     }
     
     func showPokemonInformation(pokemon: Pokemon) {
-        container.register(PokemonViewModelProtocol.self) { resolver in
-            return PokemonViewModel(model: pokemon, networkManager: resolver.resolve(NetworkManagerProtocol.self)!, id: pokemon.id)
-        }
-        
-        container.register(PokemonViewController.self) { resolver in
-            let vc = PokemonViewController(viewModel: resolver.resolve(PokemonViewModelProtocol.self))
-            return vc
-        }
-        
         DispatchQueue.main.async {
-            guard let pokemonVC = self.container.resolve(PokemonViewController.self) else { return }
+            guard let pokemonVC = Container.sharedContainer.resolve(PokemonViewController.self, name: Constants.pokemonVCNameModel, argument: pokemon) else { return }
             self.navigationController?.pushViewController(pokemonVC, animated: true)
         }
     }
     
     func showPokemonInformation(id: Int) {
-        container.register(PokemonViewModelProtocol.self) { resolver in
-            return PokemonViewModel(model: nil, networkManager: resolver.resolve(NetworkManagerProtocol.self)!, id: id)
-        }
-        
-        container.register(PokemonViewController.self) { resolver in
-            let vc = PokemonViewController(viewModel: resolver.resolve(PokemonViewModelProtocol.self))
-            return vc
-        }
-        
         DispatchQueue.main.async {
-            guard let pokemonVC = self.container.resolve(PokemonViewController.self) else { return }
+            guard let pokemonVC = Container.sharedContainer.resolve(PokemonViewController.self, name: Constants.pokemonVCNameId, argument: id) else { return }
             self.navigationController?.pushViewController(pokemonVC, animated: true)
         }
     }
