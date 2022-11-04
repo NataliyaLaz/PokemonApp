@@ -15,13 +15,20 @@ protocol NetworkManagerProtocol {
 
 final class NetworkManager: NetworkManagerProtocol {
     private let urlString = Constants.urlString
-    private let session = URLSession.shared
     private let imageCache = NSCache<NSString, UIImage>()
+    
+    private func createSession() -> URLSession {
+        let config = URLSessionConfiguration.default
+        config.waitsForConnectivity = true
+        let session = URLSession(configuration: config)
+        return session
+    }
     
     func getPokemons(completion: @escaping (Result<[PokemonListItem], Error>) -> ()) {
         guard let url = URL(string: urlString + Constants.urlAddsString) else {
             return
         }
+        let session = createSession()
         let task = session.dataTask(with: url, completionHandler: { data, response, error in
             if let data = data {
                 do {
@@ -44,6 +51,7 @@ final class NetworkManager: NetworkManagerProtocol {
         guard let url = URL(string: "\(urlString)\(Constants.pokemonString)\(id)") else {
             return
         }
+        let session = createSession()
         let task = session.dataTask(with: url, completionHandler: { data, response, error in
             if let data = data {
                 do {
@@ -69,6 +77,7 @@ final class NetworkManager: NetworkManagerProtocol {
             completion(.success(imageFromCache))
             return
         }
+        let session = createSession()
         let task = session.dataTask(with: url, completionHandler: { [weak self] data, response, error in
             if let data = data {
                 if let image = UIImage(data: data) {

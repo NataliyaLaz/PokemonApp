@@ -114,7 +114,6 @@ extension PokemonListViewController: UITableViewDelegate {
 
 // MARK: - PokemonListViewModelDelegate
 extension PokemonListViewController: PokemonListViewModelDelegate {
-    
     func updateUI() {
         DispatchQueue.main.async {
             self.pokemonListTableView.reloadData()
