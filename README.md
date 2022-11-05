@@ -30,5 +30,7 @@ MVVM
 - Realm
 - Swinject
 
+
+
 ## Screenshots
-<img width="250" alt="Screenshot 2022-10-28 at 19 54 08" src="https://user-images.githubusercontent.com/93728977/198691746-03990fff-55c6-4f6d-a220-9ed219b658be.png"><img width="250" alt="Screenshot 2022-10-28 at 19 53 55" src="https://user-images.githubusercontent.com/93728977/198691443-b2d6ab8f-d849-4733-a1b6-d3436877655b.png">
+<img width="300" alt="Screenshot 2022-11-05 at 10 16 45" src="https://user-images.githubusercontent.com/93728977/200107808-8e57f010-6376-48fb-a58d-dd2d288b0eee.png"><img width="300" alt="Screenshot 2022-11-05 at 10 12 57" src="https://user-images.githubusercontent.com/93728977/200107670-1b307cfe-e0fa-4f6a-ad28-1d418898963b.png">
