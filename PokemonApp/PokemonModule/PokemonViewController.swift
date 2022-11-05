@@ -23,7 +23,7 @@ final class PokemonViewController: UIViewController {
         imageView.layer.borderWidth = Constants.borderWidth
         imageView.layer.borderColor = UIColor.borderColor.cgColor
         imageView.clipsToBounds = true
-        imageView.contentMode = .scaleAspectFill
+        imageView.contentMode = .scaleAspectFit
         return imageView
     }()
     
@@ -116,8 +116,12 @@ private extension PokemonViewController {
                         self.pokemonImageView.image = image
                     }
                 case .failure(let error):
-                    let message = error.localizedDescription
-                    self.alertOK(title: Constants.alertErrorTitle, message: message)
+                    DispatchQueue.main.async {
+                        let message = error.localizedDescription
+                        self.alertOK(title: Constants.alertErrorTitle, message: message)
+                        self.activityIndicator.stopAnimating()
+                        self.pokemonImageView.image = UIImage(named: Constants.pokemonImage)
+                    }
                 }
             })
         } else {

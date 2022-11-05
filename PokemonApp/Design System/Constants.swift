@@ -63,6 +63,9 @@ enum Constants {
     static let pokemonVCNameModel: String = "Pokemon"
     static let pokemonViewModelNameId: String = "id"
     static let pokemonVCNameId: String = "id"
+    
+    // MARK: - pokemonImageView
+    static let pokemonImage: String = "pokemonDefault"
 }
 
 

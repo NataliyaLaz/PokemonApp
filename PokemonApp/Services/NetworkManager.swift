@@ -20,6 +20,7 @@ final class NetworkManager: NetworkManagerProtocol {
     private func createSession() -> URLSession {
         let config = URLSessionConfiguration.default
         config.waitsForConnectivity = true
+        config.timeoutIntervalForResource = 5
         let session = URLSession(configuration: config)
         return session
     }

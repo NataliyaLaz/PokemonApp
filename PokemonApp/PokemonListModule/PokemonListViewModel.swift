@@ -35,7 +35,7 @@ final class PokemonListViewModel: PokemonListViewModelProtocol {
         self.networkManager = networkManager
         self.getPokemons()
     }
-
+    
     func getNumberOfPokemonsInBD() -> Int? {
         pokemonArray = localRealm.objects(PokemonRealmModel.self).sorted(byKeyPath: Constants.idKeyPath)
         return pokemonArray.count
@@ -67,7 +67,9 @@ final class PokemonListViewModel: PokemonListViewModelProtocol {
                         self?.delegate?.showPokemonInformation(pokemon: pokemon)
                     }
                 case .failure(let error):
-                    self?.delegate?.showAlert(error: error)
+                    DispatchQueue.main.async {
+                        self?.delegate?.showAlert(error: error)
+                    }
                 }
             }
         } else {
@@ -78,7 +80,9 @@ final class PokemonListViewModel: PokemonListViewModelProtocol {
                         self?.delegate?.showPokemonInformation(pokemon: pokemon)
                     }
                 case .failure(let error):
-                    self?.delegate?.showAlert(error: error)
+                    DispatchQueue.main.async {
+                        self?.delegate?.showAlert(error: error)
+                    }
                 }
             }
         }
@@ -97,11 +101,15 @@ private extension PokemonListViewModel {
         networkManager?.getPokemons() { [weak self] result in
             switch result {
             case .success(let pokemonList):
-                self?.model = pokemonList
-                self?.delegate?.updateUI()
-
+                DispatchQueue.main.async {
+                    self?.model = pokemonList
+                    self?.delegate?.updateUI()
+                }
+                
             case .failure(let error):
-                self?.delegate?.showAlert(error: error)
+                DispatchQueue.main.async {
+                    self?.delegate?.showAlert(error: error)
+                }
             }
         }
     }
