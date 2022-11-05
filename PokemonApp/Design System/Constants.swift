@@ -40,14 +40,14 @@ enum Constants {
     static let defaultType: String = "Any"
     
     // MARK: - heightLabelText
-    static let heightLabelText: String = "type: "
+    static let heightLabelText: String = "height: "
     static let heightMeasurementText: String = "cm"
     static let defaultHeight: Int = 100
     
     // MARK: - weightLabel
     static let weightLabelText: String = "weight: "
     static let weightMeasurementText: String = "kg"
-    static let defaultWeight: Int = 100
+    static let defaultWeight: Int = 30
     
     // MARK: - URLString
     static let urlString: String = "https://pokeapi.co/api/v2/"

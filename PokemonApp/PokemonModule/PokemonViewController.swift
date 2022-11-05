@@ -91,14 +91,14 @@ private extension PokemonViewController {
         if viewModel?.model != nil {
             pokemonNameLabel.text = viewModel?.model?.name.capitalized
             typeLabel.text = Constants.typeLabelText + typesString
-            weightLabel.text = Constants.weightLabelText + "\(viewModel?.model?.weight ?? Constants.defaultWeight)" + Constants.weightMeasurementText
-            heightLabel.text = Constants.heightLabelText + "\(viewModel?.model?.height ?? Constants.defaultHeight)" + Constants.weightMeasurementText
+            weightLabel.text = Constants.weightLabelText + "\(Double(viewModel?.model?.weight ?? Constants.defaultWeight) / 10) " + Constants.weightMeasurementText
+            heightLabel.text = Constants.heightLabelText + "\((viewModel?.model?.height ?? Constants.defaultHeight) * 10) " + Constants.heightMeasurementText
         } else {
             checkDB()
             pokemonNameLabel.text = viewModel?.pokemonModel.name.capitalized
             typeLabel.text = Constants.typeLabelText + (viewModel?.pokemonModel.types ?? Constants.defaultType)
-            weightLabel.text = Constants.weightLabelText + "\(viewModel?.pokemonModel.weight ?? Constants.defaultWeight)" + Constants.weightMeasurementText
-            heightLabel.text = Constants.heightLabelText + "\(viewModel?.pokemonModel.height ?? Constants.defaultHeight)" + Constants.weightMeasurementText
+            weightLabel.text = Constants.weightLabelText + "\(viewModel?.pokemonModel.weight ?? Constants.defaultWeight) " + Constants.weightMeasurementText
+            heightLabel.text = Constants.heightLabelText + "\(viewModel?.pokemonModel.height ?? Constants.defaultHeight) " + Constants.heightMeasurementText
         }
     }
     
